@@ -1,7 +1,16 @@
 <?php
 
+session_start();
+
+
+if (isset($_SESSION['authorized']) && $_SESSION['authorized'] === TRUE) {
+   // Alright, let's show all the hidden functionality!
+} else {
+	// User is not authorized!
+	header('Location: login.php');
+	exit();
+}
 if($_SESSION['username']){
-	echo $_SESSION['username'];
 	$username = $_SESSION['username'];
 	}
 $db_name = "addressbook";

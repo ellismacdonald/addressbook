@@ -1,5 +1,14 @@
 <?php 
 session_start();
+
+
+if (isset($_SESSION['authorized']) && $_SESSION['authorized'] === TRUE) {
+   // Alright, let's show all the hidden functionality!
+} else {
+	// User is not authorized!
+	header('Location: login.php');
+	exit();
+}
 if($_SESSION['username']){
 	$username = $_SESSION['username'];
 	}
@@ -28,7 +37,7 @@ if (isset($_POST["import"])) {
 		}
 	}
 }
-if (mysqli_num_rows($result) > 0) {
+if (@mysqli_num_rows($result) > 0) {
 ?>
 <table>
 	<thead>

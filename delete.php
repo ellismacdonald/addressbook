@@ -1,6 +1,5 @@
 <?php 
 session_start();
-echo $_GET['del'];
 $id = $_GET['del'];
 $link = mysqli_connect("localhost", "root", "", "addressbook");
 // Check connection
@@ -17,5 +16,7 @@ if ($link->query($sql) === TRUE) {
 }
 
 $link->close();
+
+
 
 header('Location: show_contacts.php');

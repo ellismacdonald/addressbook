@@ -1,27 +1,17 @@
 <?php 
 
-// In the beginning of your every page you have to check if user is authorized.
-
-// On checklogin.php if user entered correct login and password, just set something like
-session_start();
-	if($_SESSION['username']){
-	echo $_SESSION['username'];
-	}
-// $_SESSION['authorized'] = TRUE;
-// ...and on other pages just check if user is authorized:
-
-if (isset($_SESSION['authorized']) && $_SESSION['authorized'] === TRUE) {
-    // Alright, let's show all the hidden functionality!
-    echo "Psst! Hey! Wanna buy some weed?";
-} else {
-    // User is not authorized!
-    header('Location: login.php');
-    exit();
-}
 
 include('get_contacts.php');
 
+function delete(){
+	if (confirm('Are you sure you want to save this thing into the database?')) {
+	// Save it!
+	} else {
+	// Do nothing!
+	} 
+}
 ?>
+
 <!DOCTYPE html>
 <html>
 	<head>
@@ -66,7 +56,7 @@ include('get_contacts.php');
 				<a href="edit.php?edit=<?php echo $row['contact_id']; ?>" class="edit_btn" >Edit</a>
 			</td>
 			<td>
-				<a href="delete.php?del=<?php echo $row['contact_id']; ?>" class="del_btn">Delete</a>
+				<a href="delete.php?del=<?php echo $row['contact_id']; ?>" class="del_btn" onclick="return confirm('Are you sure you want to delete this contact?')">Delete</a>
 			</td>
 		</tr>
 	<?php } ?>

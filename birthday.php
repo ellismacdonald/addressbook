@@ -1,25 +1,22 @@
 <?php
 session_start();
-if($_SESSION['username']){
-	echo $_SESSION['username'];
-	}
-$host = "localhost";
-    $username = "root";
-    $password = "";
-    $dbname = "addressbook";
 
-    // open connection to mysql database
-    $connection = mysqli_connect($host, $username, $password, $dbname) or die("Connection Error " . mysqli_error($connection));
-    
-    // fetch mysql table rows
-    $sql = "SELECT *
+
+$host = "localhost";
+	$username = "root";
+	$password = "";
+	$dbname = "addressbook";
+
+	// open connection to mysql database
+	$connection = mysqli_connect($host, $username, $password, $dbname) or die("Connection Error " . mysqli_error($connection));
+
+// fetch mysql table rows
+$sql = "SELECT *
 FROM contacts
 WHERE MONTH(birthday) = MONTH(CURRENT_DATE())";
-   $result = mysqli_query($connection, $sql) or die("Selection Error " . mysqli_error($connection));
+$result = mysqli_query($connection, $sql) or die("Selection Error " . mysqli_error($connection));
 
-    //close the db connection
-    
-
+	//close the db connection
 ?>
 
 <!DOCTYPE html>
@@ -27,8 +24,8 @@ WHERE MONTH(birthday) = MONTH(CURRENT_DATE())";
 	<head>
 	<link rel="stylesheet" type="text/css" href="style.css">
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-      <title>My Music (Ordered by Date Acquired)</title>
-      <?php $result = mysqli_query($connection, $sql); ?>
+	<title>My Music (Ordered by Date Acquired)</title>
+	<?php $result = mysqli_query($connection, $sql); ?>
 	</head>
 		<body>
 		<table>

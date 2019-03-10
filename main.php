@@ -1,3 +1,16 @@
+<?php 
+session_start();
+
+
+if (isset($_SESSION['authorized']) && $_SESSION['authorized'] === TRUE) {
+   // Alright, let's show all the hidden functionality!
+} else {
+	// User is not authorized!
+	header('Location: login.php');
+	exit();
+}
+?>
+
 <!doctype html>
 <html>
 <head>
@@ -41,6 +54,13 @@
 <form action="download.php" method="post">
     <p>
         <input type="submit" name="add" id="login" value="download">
+    </p>
+</form>
+
+<label>Email contacts</label>
+<form action="email.php" method="post">
+    <p>
+        <input type="submit" name="add" id="login" value="email">
     </p>
 </form>
 

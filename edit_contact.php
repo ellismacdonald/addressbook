@@ -1,6 +1,14 @@
 <?php 
 session_start();
-echo $_POST['id'];
+
+
+if (isset($_SESSION['authorized']) && $_SESSION['authorized'] === TRUE) {
+   // Alright, let's show all the hidden functionality!
+} else {
+	// User is not authorized!
+	header('Location: login.php');
+	exit();
+}
 $id = $_POST['id'];
 $link = mysqli_connect("localhost", "root", "", "addressbook");
 // Check connection
