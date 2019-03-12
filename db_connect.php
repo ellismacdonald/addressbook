@@ -5,12 +5,3 @@ try {
 } catch (PDOException $e) {
      $error = $e->getMessage();
 }
-
-// if (isset($db)){
-//      echo 'Connected';
-// } else if (isset($error)){
-//      echo $error;
-
-// }else{
-//      echo 'unknown error';
-// }
