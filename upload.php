@@ -1,84 +1,37 @@
 <?php 
 session_start();
-
-
-if (isset($_SESSION['authorized']) && $_SESSION['authorized'] === TRUE) {
-   // Alright, let's show all the hidden functionality!
-} else {
-	// User is not authorized!
-	header('Location: login.php');
-	exit();
-}
+error_reporting(E_ERROR | E_PARSE);
 if($_SESSION['username']){
 	$username = $_SESSION['username'];
 	}
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+	$conn = mysqli_connect("localhost", "root", "", "addressbook");
 
-$conn = mysqli_connect("localhost", "root", "", "addressbook");
+	if (isset($_POST["import"])) {
+		$fileName = $_FILES["file"]["tmp_name"];
 
-if (isset($_POST["import"])) {
-	$fileName = $_FILES["file"]["tmp_name"];
+		if ($_FILES["file"]["size"] > 0) {
 
-	if ($_FILES["file"]["size"] > 0) {
+			$file = fopen($fileName, "r");
 
-		$file = fopen($fileName, "r");
+			while (($column = @fgetcsv($file, 10000, ",")) !== FALSE) {
+				$sqlInsert = "INSERT into contacts (username, first_name, last_name, phone_number, email,street_address, city, province, postal_code,birthday)
+				values ('" . $username . "','" . $column[0] . "','" . $column[1] . "','" . $column[2] . "','" . $column[3] . "','" . $column[4] . "','" . $column[5] . "','" . $column[6] . "','" . $column[7] . "','" . $column[8] . "')";
+				$result = mysqli_query($conn, $sqlInsert);
 
-		while (($column = fgetcsv($file, 10000, ",")) !== FALSE) {
-			$sqlInsert = "INSERT into contacts (username, first_name, last_name, phone_number, email,street_address, city, province, postal_code,birthday)
-			values ('" . $username . "','" . $column[0] . "','" . $column[1] . "','" . $column[2] . "','" . $column[3] . "','" . $column[4] . "','" . $column[5] . "','" . $column[6] . "','" . $column[7] . "','" . $column[8] . "')";
-			$result = mysqli_query($conn, $sqlInsert);
-
-			if (! empty($result)) {
-				$type = "success";
-				$message = "CSV Data Imported into the Database";
-			} else {
-				$type = "error";
-				$message = "Problem in Importing CSV Data";
+				if (empty($result)) {
+					$type = "success";
+					$message = "CSV Data Imported into the Database";
+				} else {
+					$type = "error";
+					$message = "Problem in Importing CSV Data";
+				}
 			}
 		}
 	}
-}
-if (@mysqli_num_rows($result) > 0) {
-?>
-<table>
-	<thead>
-		<tr>
-			<th>Representative</th>
-			<th>First Name</th>
-			<th>Last Name</th>
-			<th>Phone Number</th>
-			<th>Email</th>
-			<th>Address</th>
-			<th>City</th>
-			<th>Province</th>
-			<th>Postal Code</th>
-			<th>Birthday</th>
 
-			<th colspan="2">Action</th>
-		</tr>
-	</thead>
-	
-	<?php while ($row = mysqli_fetch_array($results)) { ?>
-		<tr>
-			<td><?php echo $row['username']; ?></td>
-			<td><?php echo $row['first_name']; ?></td>
-			<td><?php echo $row['last_name']; ?></td>
-			<td><?php echo $row['phone_number']; ?></td>
-			<td><?php echo $row['email']; ?></td>
-			<td><?php echo $row['street_address']; ?></td>
-			<td><?php echo $row['city']; ?></td>
-			<td><?php echo $row['province']; ?></td>
-			<td><?php echo $row['postal_code']; ?></td>
-			<td><?php echo $row['birthday']; ?></td>
-			<td>
-				<a href="edit.php?edit=<?php echo $row['contact_id']; ?>" class="edit_btn" >Edit</a>
-			</td>
-			<td>
-				<a href="delete.php?del=<?php echo $row['contact_id']; ?>" class="del_btn">Delete</a>
-			</td>
-		</tr>
-	<?php } ?>
-</table>
-<?php } ?>
+}
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -114,17 +67,23 @@ if (@mysqli_num_rows($result) > 0) {
 </script>
 </head>
 <body>
-<form class="form-horizontal" action="" method="post" name="uploadCSV"
+<form class="form-horizontal" action="<?php echo $_SERVER["PHP_SELF"];?>" method="post" name="uploadCSV"
    enctype="multipart/form-data">
    <div class="input-row">
       <label class="col-md-4 control-label">Choose CSV File</label> <input
          type="file" name="file" id="file" accept=".csv">
       <button type="submit" id="submit" name="import"
          class="btn-submit">Import</button>
-      <br />
+		<br />
+		<input type="hidden" name="upload"/>
 
    </div>
-   <div id="labelError"></div>
+   <div id="labelError"><?php echo $message?></div>
 </form>
+<form action="main.php" method="post">
+		<p>
+				<input type="submit" name="add" id="login" value="Back to Main">
+		</p>
+	</form>
 </body>
 </html>

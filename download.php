@@ -1,16 +1,16 @@
 <?php
-    // mysql database connection details
+    // mysql database conn details
     $host = "localhost";
     $username = "root";
     $password = "";
     $dbname = "addressbook";
 
-    // open connection to mysql database
-    $connection = mysqli_connect($host, $username, $password, $dbname) or die("Connection Error " . mysqli_error($connection));
+    // open conn to mysql database
+    $conn = mysqli_connect($host, $username, $password, $dbname) or die("conn Error " . mysqli_error($conn));
     
     // fetch mysql table rows
     $sql = "select * from contacts";
-    $result = mysqli_query($connection, $sql) or die("Selection Error " . mysqli_error($connection));
+    $result = mysqli_query($conn, $sql) or die("Selection Error " . mysqli_error($conn));
 
     $fp = fopen('contacts.csv', 'w');
 
@@ -21,8 +21,8 @@
     
     fclose($fp);
 
-    //close the db connection
-    mysqli_close($connection);
+    //close the db conn
+    mysqli_close($conn);
 
     header('Location: main.php');
 ?>

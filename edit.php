@@ -1,18 +1,20 @@
 <?php 
 
 session_start();
-
+// redirects user to login if they are not authorized
 if (isset($_SESSION['authorized']) && $_SESSION['authorized'] === TRUE) {
    // Alright, let's show all the hidden functionality!
 } else {
-	// User is not authorized!
-	header('Location: login.php');
-	exit();
+   // User is not authorized!
+   header('Location: login.php');
+   exit();
 }
+
+// db credentials
 $db = mysqli_connect('localhost', 'root', '', 'addressbook');
+// checks if user clicked edit and sets $id to selected record to edit
 if (isset($_GET['edit'])) {
    $id = $_GET['edit'];
-   $update = true;
    $record = mysqli_query($db, "SELECT * FROM contacts WHERE contact_id=$id");
    
    $n = mysqli_fetch_array($record);

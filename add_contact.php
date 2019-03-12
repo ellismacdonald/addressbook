@@ -23,21 +23,12 @@ VALUES ('$username', '$first_name', '$last_name', '$phone_number', '$email', '$s
 
 
 if ($link->query($sql) === TRUE) {
-    echo "New record created successfully";
+	echo "New record created successfully";
+	header('Location: main.php');
 } else {
-    echo "Error: " . $sql . "<br>" . $link->error;
+	echo "Error: " . $sql . "<br>" . $link->error;
 }
 
 $link->close();
 
-?>
-<!DOCTYPE html>
-<html>
-	<head>
-		<title>Add a Record</title>
-	</head>
-	<body>
-		
-	</body>
-</html>
 
